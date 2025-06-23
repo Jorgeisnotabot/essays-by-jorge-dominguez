@@ -29,7 +29,7 @@
     <meta name="twitter:creator" content="@monsieur64bits">
     
     <!-- Additional SEO -->
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#d32f2f">
     <link rel="alternate" type="application/rss+xml" title="Essays by Jorge Domínguez RSS Feed" href="feed.xml">
     
     <!-- Structured Data (JSON-LD) -->
@@ -67,41 +67,23 @@
     </script>
     <style>
         :root {
-            --bg: #fdfdfc;
-            --text: #1a1611;
-            --text-light: #8b8680;
-            --border: #f4f3f0;
-            --accent: #6366f1;
-            --secondary: #a5b4fc;
-            --warm: #f59e0b;
-            --subtle: #faf9f7;
-            --font-size-base: 1.125rem;
-            --font-size-lg: 1.5rem;
-            --font-size-xl: 3rem;
-            --font-size-xxl: 4rem;
-            --spacing-xs: 0.75rem;
-            --spacing-sm: 1.5rem;
-            --spacing-md: 3rem;
-            --spacing-lg: 4.5rem;
-            --spacing-xl: 6rem;
-            --max-width: 42rem;
-            --line-height-tight: 1.1;
-            --line-height-relaxed: 1.8;
-            --letter-spacing-tight: -0.025em;
-            --letter-spacing-wide: 0.025em;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f0f0e;
-                --text: #f7f6f3;
-                --text-light: #a8a29e;
-                --border: #1c1b18;
-                --accent: #818cf8;
-                --secondary: #6366f1;
-                --warm: #fbbf24;
-                --subtle: #1a1917;
-            }
+            --white: #ffffff;
+            --near-white: #fafafa;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --text-gray: #333333;
+            --text-light: #666666;
+            --red: #d32f2f;
+            --blue: #1976d2;
+            --yellow: #fbc02d;
+            --base-unit: 8px;
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.25rem;
+            --text-xl: 1.5rem;
+            --text-2xl: 2rem;
+            --text-3xl: 3rem;
         }
 
         * {
@@ -111,215 +93,242 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            line-height: var(--line-height-relaxed);
-            color: var(--text);
-            background-color: var(--bg);
-            font-size: var(--font-size-base);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-wide);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: var(--text-gray);
+            background-color: var(--white);
+            font-size: var(--text-base);
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            max-width: var(--max-width);
+            max-width: 1200px;
             margin: 0 auto;
-            padding: var(--spacing-xl) var(--spacing-md);
+            padding: calc(var(--base-unit) * 12) calc(var(--base-unit) * 3);
+        }
+
+        .grid-system {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: calc(var(--base-unit) * 4);
+            align-items: start;
         }
 
         header {
-            margin-bottom: var(--spacing-xl);
-            padding-bottom: var(--spacing-lg);
-            position: relative;
-        }
-
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 4rem;
-            height: 1px;
-            background: linear-gradient(90deg, var(--accent), transparent);
+            grid-column: 1 / 4;
+            padding-right: calc(var(--base-unit) * 6);
+            border-right: 1px solid var(--medium-gray);
+            position: sticky;
+            top: calc(var(--base-unit) * 12);
         }
 
         .site-title {
-            font-size: var(--font-size-xxl);
-            font-weight: 200;
-            letter-spacing: var(--letter-spacing-tight);
-            margin-bottom: var(--spacing-sm);
-            line-height: var(--line-height-tight);
-            background: linear-gradient(135deg, var(--text), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: var(--text-3xl);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: calc(var(--base-unit) * 2);
+            color: var(--text-gray);
         }
 
         .site-subtitle {
+            font-size: var(--text-sm);
+            font-weight: 400;
             color: var(--text-light);
-            font-size: var(--font-size-base);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-wide);
-            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: calc(var(--base-unit) * 8);
         }
 
-        .essays-grid {
+        .author-info {
+            font-size: var(--text-xs);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .main-content {
+            grid-column: 4 / -1;
             display: grid;
-            gap: var(--spacing-xl);
+            gap: calc(var(--base-unit) * 8);
+        }
+
+        .essay-list {
+            display: grid;
+            gap: calc(var(--base-unit) * 6);
         }
 
         .essay-card {
-            padding: var(--spacing-lg) 0;
+            padding: calc(var(--base-unit) * 6) 0;
+            border-bottom: 1px solid var(--medium-gray);
             position: relative;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .essay-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -2rem;
-            width: 2px;
-            height: 0;
-            background: linear-gradient(180deg, var(--accent), var(--warm));
-            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        .essay-card:last-child {
+            border-bottom: none;
         }
 
-        .essay-card:hover::before {
-            height: 100%;
-        }
-
-        .essay-card:hover {
-            transform: translateX(0.5rem);
+        .essay-number {
+            font-size: var(--text-xs);
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: calc(var(--base-unit) * 2);
         }
 
         .essay-title {
-            font-size: var(--font-size-lg);
+            font-size: var(--text-xl);
             font-weight: 400;
-            margin-bottom: var(--spacing-sm);
-            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: calc(var(--base-unit) * 3);
             text-decoration: none;
+            color: var(--text-gray);
             display: block;
-            letter-spacing: var(--letter-spacing-tight);
-            line-height: var(--line-height-tight);
-            transition: color 0.3s ease;
+            transition: color 0.2s ease;
         }
 
         .essay-title:hover {
-            color: var(--accent);
+            color: var(--red);
         }
 
         .essay-meta {
-            font-size: 0.875rem;
+            font-size: var(--text-xs);
             color: var(--text-light);
-            margin-bottom: var(--spacing-sm);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
+            margin-bottom: calc(var(--base-unit) * 4);
             font-weight: 500;
         }
 
         .essay-excerpt {
+            font-size: var(--text-base);
+            line-height: 1.6;
             color: var(--text-light);
-            line-height: var(--line-height-relaxed);
-            font-style: italic;
-            font-size: 1rem;
+            max-width: 60ch;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: var(--spacing-lg);
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.875rem;
+        .accent-mark {
+            position: absolute;
+            left: calc(var(--base-unit) * -6);
+            top: calc(var(--base-unit) * 6);
+            width: calc(var(--base-unit) * 3);
+            height: 1px;
+            background-color: var(--red);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .essay-card:hover .accent-mark {
+            opacity: 1;
         }
 
-        .back-link::before {
-            content: "← ";
+        .essay-card:nth-child(2) .accent-mark {
+            background-color: var(--blue);
         }
 
-        .essay-header {
-            margin-bottom: var(--spacing-xl);
-            text-align: center;
+        .essay-card:nth-child(3) .accent-mark {
+            background-color: var(--yellow);
         }
 
-        .essay-full .essay-title {
-            font-size: var(--font-size-xl);
-            margin-bottom: var(--spacing-sm);
-            color: var(--text);
-            text-decoration: none;
+        .color-block {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: calc(var(--base-unit) * 8);
+            height: calc(var(--base-unit) * 8);
+            background-color: var(--red);
+            z-index: -1;
         }
 
-        .essay-body {
-            font-size: var(--font-size-base);
-            line-height: var(--line-height-relaxed);
-            font-weight: 300;
-        }
-
-        .essay-body p {
-            margin-bottom: var(--spacing-md);
-        }
-
-        .essay-body p:first-of-type::first-letter {
-            float: left;
-            font-size: 4rem;
-            line-height: 3rem;
-            padding-right: 0.5rem;
-            padding-top: 0.25rem;
-            font-weight: 300;
-            color: var(--accent);
-        }
-
-        .essay-body h2 {
-            font-size: var(--font-size-lg);
-            font-weight: 400;
-            margin: var(--spacing-lg) 0 var(--spacing-md) 0;
-            color: var(--text);
-            letter-spacing: var(--letter-spacing-tight);
-            position: relative;
-        }
-
-        .essay-body h2::before {
+        .color-block::after {
             content: '';
             position: absolute;
-            left: -2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 1rem;
-            height: 1px;
-            background: var(--accent);
+            bottom: calc(var(--base-unit) * -4);
+            left: calc(var(--base-unit) * -4);
+            width: calc(var(--base-unit) * 4);
+            height: calc(var(--base-unit) * 4);
+            background-color: var(--blue);
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: var(--spacing-md) var(--spacing-sm);
+                padding: calc(var(--base-unit) * 8) calc(var(--base-unit) * 2);
+            }
+            
+            .grid-system {
+                grid-template-columns: 1fr;
+                gap: calc(var(--base-unit) * 6);
+            }
+            
+            header {
+                grid-column: 1;
+                border-right: none;
+                border-bottom: 1px solid var(--medium-gray);
+                padding-right: 0;
+                padding-bottom: calc(var(--base-unit) * 6);
+                position: static;
+            }
+            
+            .main-content {
+                grid-column: 1;
+            }
+            
+            .site-title {
+                font-size: var(--text-2xl);
+            }
+            
+            .color-block {
+                width: calc(var(--base-unit) * 4);
+                height: calc(var(--base-unit) * 4);
+            }
+            
+            .color-block::after {
+                width: calc(var(--base-unit) * 2);
+                height: calc(var(--base-unit) * 2);
+                bottom: calc(var(--base-unit) * -2);
+                left: calc(var(--base-unit) * -2);
             }
         }
     </style>
 </head>
 <body>
+    <div class="color-block"></div>
+    
     <div class="container">
-        <header>
-            <h1 class="site-title">Essays</h1>
-            <p class="site-subtitle">A collection of thoughts and reflections</p>
-        </header>
+        <div class="grid-system">
+            <header>
+                <h1 class="site-title">Essays</h1>
+                <p class="site-subtitle">Jorge Domínguez</p>
+                <div class="author-info">
+                    A collection of thoughts<br>
+                    and reflections on philosophy,<br>
+                    productivity, and meaning<br>
+                    in modern life.
+                </div>
+            </header>
 
-        <main>
-            <div class="essays-grid">
-                <article class="essay-card">
-                    <h2><a href="essays/algorithmic-thinking.html" class="essay-title">The Fundamentals of Algorithmic Thinking</a></h2>
-                    <div class="essay-meta">June 2025 • 6 min read</div>
-                    <p class="essay-excerpt">Think of algorithms as recipes for solving problems. Just like cooking, you need clear ingredients (inputs), specific steps, and a predictable result.</p>
-                </article>
-                <article class="essay-card">
-                    <h2><a href="essays/our-obsession-with-productivity.html" class="essay-title">Our obsession with productivity</a></h2>
-                    <div class="essay-meta">June 2025 • 6 min read</div>
-                    <p class="essay-excerpt">On our obsession with optimization and the strange trap of delaying happiness in pursuit of an imaginary better future.</p>
-                </article>
-            </div>
-        </main>
+            <main class="main-content">
+                <div class="essay-list">
+                    <article class="essay-card">
+                        <div class="essay-number">01</div>
+                        <div class="accent-mark"></div>
+                        <h2><a href="essays/algorithmic-thinking.html" class="essay-title">The Fundamentals of Algorithmic Thinking</a></h2>
+                        <div class="essay-meta">June 2025 • 6 min read</div>
+                        <p class="essay-excerpt">Think of algorithms as recipes for solving problems. Just like cooking, you need clear ingredients, specific steps, and a predictable result. But unlike recipes, algorithms must work perfectly every single time.</p>
+                    </article>
+                    
+                    <article class="essay-card">
+                        <div class="essay-number">02</div>
+                        <div class="accent-mark"></div>
+                        <h2><a href="essays/our-obsession-with-productivity.html" class="essay-title">Our obsession with productivity</a></h2>
+                        <div class="essay-meta">June 2025 • 6 min read</div>
+                        <p class="essay-excerpt">On our obsession with optimization and the strange trap of delaying happiness in pursuit of an imaginary better future. We have created a mythology of cosmic bookkeeping.</p>
+                    </article>
+                </div>
+            </main>
+        </div>
     </div>
 </body>
 </html>

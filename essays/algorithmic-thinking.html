@@ -10,11 +10,11 @@
     <meta name="keywords" content="algorithmic thinking, algorithms, computer science, problem solving, programming, computational thinking, Jorge Domínguez">
     <meta name="author" content="Jorge Domínguez">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://jorge-dominguez.github.io/essays/algorithmic-thinking.html">
+    <link rel="canonical" href="https://jorgeisnotabot.github.io/essays-by-jorge-dominguez/essays/algorithmic-thinking.html">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://jorge-dominguez.github.io/essays/algorithmic-thinking.html">
+    <meta property="og:url" content="https://jorgeisnotabot.github.io/essays-by-jorge-dominguez/essays/algorithmic-thinking.html">
     <meta property="og:title" content="The Fundamentals of Algorithmic Thinking">
     <meta property="og:description" content="Understanding the core principles of algorithmic thinking: problem definition, constraints, efficiency, and systematic approaches to solving complex problems.">
     <meta property="og:site_name" content="Essays by Jorge Domínguez">
@@ -28,14 +28,14 @@
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://jorge-dominguez.github.io/essays/algorithmic-thinking.html">
+    <meta name="twitter:url" content="https://jorgeisnotabot.github.io/essays-by-jorge-dominguez/essays/algorithmic-thinking.html">
     <meta name="twitter:title" content="The Fundamentals of Algorithmic Thinking">
     <meta name="twitter:description" content="Core principles of algorithmic thinking: problem definition, constraints, efficiency, and systematic problem-solving approaches.">
-    <meta name="twitter:site" content="@yourhandle">
-    <meta name="twitter:creator" content="@yourhandle">
+    <meta name="twitter:site" content="@monsieur64bits">
+    <meta name="twitter:creator" content="@monsieur64bits">
     
     <!-- Additional SEO -->
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#d32f2f">
     <link rel="alternate" type="application/rss+xml" title="Essays by Jorge Domínguez RSS Feed" href="../feed.xml">
     
     <!-- Structured Data (JSON-LD) -->
@@ -52,7 +52,7 @@
         "publisher": {
             "@type": "Organization",
             "name": "Essays by Jorge Domínguez",
-            "url": "https://jorge-dominguez.github.io/essays"
+            "url": "https://jorgeisnotabot.github.io/essays-by-jorge-dominguez"
         },
         "datePublished": "2025-06-22T00:00:00Z",
         "dateModified": "2025-06-22T00:00:00Z",
@@ -62,47 +62,30 @@
         "timeRequired": "PT5M",
         "inLanguage": "en-US",
         "isAccessibleForFree": true,
-        "url": "https://jorge-dominguez.github.io/essays/algorithmic-thinking.html"
+        "url": "https://jorgeisnotabot.github.io/essays-by-jorge-dominguez/essays/algorithmic-thinking.html"
     }
     </script>
     
     <style>
         :root {
-            --bg: #fdfdfc;
-            --text: #1a1611;
-            --text-light: #8b8680;
-            --border: #f4f3f0;
-            --accent: #6366f1;
-            --secondary: #a5b4fc;
-            --warm: #f59e0b;
-            --subtle: #faf9f7;
-            --font-size-base: 1.125rem;
-            --font-size-lg: 1.5rem;
-            --font-size-xl: 3rem;
-            --font-size-xxl: 4rem;
-            --spacing-xs: 0.75rem;
-            --spacing-sm: 1.5rem;
-            --spacing-md: 3rem;
-            --spacing-lg: 4.5rem;
-            --spacing-xl: 6rem;
-            --max-width: 42rem;
-            --line-height-tight: 1.1;
-            --line-height-relaxed: 1.8;
-            --letter-spacing-tight: -0.025em;
-            --letter-spacing-wide: 0.025em;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #0f0f0e;
-                --text: #f7f6f3;
-                --text-light: #a8a29e;
-                --border: #1c1b18;
-                --accent: #818cf8;
-                --secondary: #6366f1;
-                --warm: #fbbf24;
-                --subtle: #1a1917;
-            }
+            --white: #ffffff;
+            --near-white: #fafafa;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --text-gray: #333333;
+            --text-light: #666666;
+            --red: #d32f2f;
+            --blue: #1976d2;
+            --yellow: #fbc02d;
+            --base-unit: 8px;
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 2rem;
+            --text-4xl: 2.5rem;
         }
 
         * {
@@ -112,221 +95,246 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            line-height: var(--line-height-relaxed);
-            color: var(--text);
-            background-color: var(--bg);
-            font-size: var(--font-size-base);
-            font-weight: 300;
-            letter-spacing: var(--letter-spacing-wide);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-gray);
+            background-color: var(--white);
+            font-size: var(--text-lg);
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            max-width: var(--max-width);
+            max-width: 800px;
             margin: 0 auto;
-            padding: var(--spacing-xl) var(--spacing-md);
+            padding: calc(var(--base-unit) * 12) calc(var(--base-unit) * 3);
         }
 
         .back-link {
             display: inline-block;
-            margin-bottom: var(--spacing-lg);
-            color: var(--accent);
+            margin-bottom: calc(var(--base-unit) * 8);
+            color: var(--red);
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: var(--text-xs);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: opacity 0.2s ease;
         }
 
         .back-link:hover {
-            color: var(--warm);
+            opacity: 0.7;
         }
 
         .back-link::before {
             content: "← ";
+            margin-right: calc(var(--base-unit) * 1);
         }
 
-        .essay-header {
-            margin-bottom: var(--spacing-xl);
-            text-align: center;
+        .article-header {
+            margin-bottom: calc(var(--base-unit) * 12);
+            padding-bottom: calc(var(--base-unit) * 8);
+            border-bottom: 1px solid var(--medium-gray);
             position: relative;
         }
 
-        .essay-header::after {
-            content: '';
-            position: absolute;
-            bottom: -2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4rem;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        }
-
-        .essay-title {
-            font-size: var(--font-size-xl);
-            font-weight: 200;
-            letter-spacing: var(--letter-spacing-tight);
-            margin-bottom: var(--spacing-sm);
-            line-height: var(--line-height-tight);
-            color: var(--text);
-        }
-
-        .essay-meta {
-            font-size: 0.875rem;
+        .article-number {
+            font-size: var(--text-xs);
             color: var(--text-light);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.2em;
+            margin-bottom: calc(var(--base-unit) * 3);
             font-weight: 500;
         }
 
-        .essay-body {
-            font-size: var(--font-size-base);
-            line-height: var(--line-height-relaxed);
+        .article-title {
+            font-size: var(--text-4xl);
             font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: calc(var(--base-unit) * 4);
+            color: var(--text-gray);
+            letter-spacing: -0.02em;
         }
 
-        .essay-body p {
-            margin-bottom: var(--spacing-md);
+        .article-meta {
+            font-size: var(--text-xs);
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
         }
 
-        .essay-body p:first-of-type::first-letter {
-            float: left;
-            font-size: 4rem;
-            line-height: 3rem;
-            padding-right: 0.5rem;
-            padding-top: 0.25rem;
-            font-weight: 300;
-            color: var(--accent);
+        .accent-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: calc(var(--base-unit) * 8);
+            height: 1px;
+            background-color: var(--red);
         }
 
-        .essay-body em {
-            font-style: italic;
-            color: var(--accent);
+        .article-content {
+            max-width: 65ch;
+            margin: 0 auto;
+        }
+
+        .article-content p {
+            margin-bottom: calc(var(--base-unit) * 4);
+            line-height: 1.7;
+        }
+
+        .article-content p:first-of-type {
+            font-size: var(--text-xl);
+            line-height: 1.5;
+            margin-bottom: calc(var(--base-unit) * 6);
+            color: var(--text-gray);
+        }
+
+        .article-content h2 {
+            font-size: var(--text-2xl);
             font-weight: 400;
-        }
-
-        .essay-body h2 {
-            font-size: var(--font-size-lg);
-            font-weight: 400;
-            margin: var(--spacing-lg) 0 var(--spacing-md) 0;
-            color: var(--text);
-            letter-spacing: var(--letter-spacing-tight);
+            margin: calc(var(--base-unit) * 8) 0 calc(var(--base-unit) * 4) 0;
+            color: var(--text-gray);
             position: relative;
         }
 
-        .essay-body h2::before {
+        .article-content h2::before {
             content: '';
             position: absolute;
-            left: -2rem;
+            left: calc(var(--base-unit) * -6);
             top: 50%;
             transform: translateY(-50%);
-            width: 1rem;
+            width: calc(var(--base-unit) * 3);
             height: 1px;
-            background: var(--accent);
+            background-color: var(--blue);
         }
 
-        .reading-progress {
+        .article-content em {
+            font-style: italic;
+            color: var(--blue);
+        }
+
+        .color-accent {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--subtle);
-            z-index: 100;
+            top: calc(var(--base-unit) * 8);
+            right: calc(var(--base-unit) * 3);
+            width: calc(var(--base-unit) * 6);
+            height: calc(var(--base-unit) * 6);
+            background-color: var(--yellow);
+            z-index: -1;
         }
 
-        .reading-progress::after {
+        .color-accent::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--warm));
-            width: var(--progress, 0%);
-            transition: width 0.1s ease;
+            bottom: calc(var(--base-unit) * -3);
+            left: calc(var(--base-unit) * -3);
+            width: calc(var(--base-unit) * 3);
+            height: calc(var(--base-unit) * 3);
+            background-color: var(--blue);
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: var(--spacing-md) var(--spacing-sm);
+                padding: calc(var(--base-unit) * 8) calc(var(--base-unit) * 2);
             }
             
-            .essay-title {
-                font-size: var(--font-size-lg);
+            body {
+                font-size: var(--text-base);
             }
             
-            .essay-body p:first-of-type::first-letter {
-                font-size: 3rem;
-                line-height: 2.5rem;
+            .article-title {
+                font-size: var(--text-3xl);
+            }
+            
+            .article-content p:first-of-type {
+                font-size: var(--text-lg);
+            }
+            
+            .article-content h2 {
+                font-size: var(--text-xl);
+            }
+            
+            .color-accent {
+                width: calc(var(--base-unit) * 4);
+                height: calc(var(--base-unit) * 4);
+                top: calc(var(--base-unit) * 4);
+                right: calc(var(--base-unit) * 2);
+            }
+            
+            .color-accent::after {
+                width: calc(var(--base-unit) * 2);
+                height: calc(var(--base-unit) * 2);
+                bottom: calc(var(--base-unit) * -2);
+                left: calc(var(--base-unit) * -2);
             }
         }
     </style>
 </head>
 <body>
-    <div class="reading-progress"></div>
+    <div class="color-accent"></div>
     
     <div class="container">
         <a href="../index.html" class="back-link">Back to Essays</a>
         
-        <header class="essay-header">
-            <h1 class="essay-title">The Fundamentals of Algorithmic Thinking</h1>
-            <div class="essay-meta">June 2025 • 5 min read</div>
+        <header class="article-header">
+            <div class="article-number">01</div>
+            <h1 class="article-title">The Fundamentals of Algorithmic Thinking</h1>
+            <div class="article-meta">June 2025 • 5 min read</div>
+            <div class="accent-line"></div>
         </header>
 
-        <main>
-            <article class="essay-body">
-                <p>Think of algorithms as recipes for solving problems. Just like cooking, you need clear ingredients (inputs), specific steps, and a predictable result. But unlike recipes, algorithms must work perfectly every single time.</p>
+        <main class="article-content">
+            <p>Think of algorithms as recipes for solving problems. Just like cooking, you need clear ingredients (inputs), specific steps, and a predictable result. But unlike recipes, algorithms must work perfectly every single time.</p>
 
-                <h2>Start with Clear Boundaries</h2>
+            <h2>Start with Clear Boundaries</h2>
 
-                <p>Here's a simple question that reveals everything about algorithmic thinking: <em>Does the range include 1 and 10?</em></p>
+            <p>Here's a simple question that reveals everything about algorithmic thinking: <em>Does the range include 1 and 10?</em></p>
 
-                <p>This isn't nitpicking, it's essential. If I ask you to guess a number between 1 and 10, do you have 8 possibilities (2 through 9) or 10 possibilities (1 through 10)? The difference completely changes your strategy.</p>
+            <p>This isn't nitpicking—it's essential. If I ask you to guess a number between 1 and 10, do you have 8 possibilities (2 through 9) or 10 possibilities (1 through 10)? The difference completely changes your strategy.</p>
 
-                <p>Before writing any algorithm, you must define exactly what counts as valid input. What's the smallest number? The largest? Are decimals allowed? These boundaries aren't restrictions, they're the foundation that makes efficient solutions possible.</p>
+            <p>Before writing any algorithm, you must define exactly what counts as valid input. What's the smallest number? The largest? Are decimals allowed? These boundaries aren't restrictions—they're the foundation that makes efficient solutions possible.</p>
 
-                <h2>Why Algorithms Need Rules</h2>
+            <h2>Why Algorithms Need Rules</h2>
 
-                <p>An algorithm is simply a set of instructions that always produces the correct answer. But those instructions must follow strict rules:</p>
+            <p>An algorithm is simply a set of instructions that always produces the correct answer. But those instructions must follow strict rules:</p>
 
-                <p>Each step must be crystal clear. No ambiguity allowed. The steps must happen in a specific order. The algorithm must finish in reasonable time. And most importantly, it must always produce a result.</p>
+            <p>Each step must be crystal clear. No ambiguity allowed. The steps must happen in a specific order. The algorithm must finish in reasonable time. And most importantly, it must always produce a result.</p>
 
-                <p>Think of giving directions to someone. "Go down the street and turn at the big tree" isn't algorithmic,what if there are multiple trees? But "Drive 0.3 miles north, then turn right at Oak Street" works every time.</p>
+            <p>Think of giving directions to someone. "Go down the street and turn at the big tree" isn't algorithmic—what if there are multiple trees? But "Drive 0.3 miles north, then turn right at Oak Street" works every time.</p>
 
-                <h2>Two Ways to Search</h2>
+            <h2>Two Ways to Search</h2>
 
-                <p>Imagine you're looking for a specific book in a library. You have two approaches:</p>
+            <p>Imagine you're looking for a specific book in a library. You have two approaches:</p>
 
-                <p><em>Linear search</em> means starting at the first shelf and checking every book until you find yours. It's simple, requires no preparation, and always works. The downside? If the book you want is near the end, you'll check thousands of books first.</p>
+            <p><em>Linear search</em> means starting at the first shelf and checking every book until you find yours. It's simple, requires no preparation, and always works. The downside? If the book you want is near the end, you'll check thousands of books first.</p>
 
-                <p><em>Binary search</em> only works if books are organized alphabetically. But when they are, you can find any book incredibly fast. Start in the middle. If your book comes alphabetically before the middle book, search the left half. If after, search the right half. Keep dividing in half until you find it.</p>
+            <p><em>Binary search</em> only works if books are organized alphabetically. But when they are, you can find any book incredibly fast. Start in the middle. If your book comes alphabetically before the middle book, search the left half. If after, search the right half. Keep dividing in half until you find it.</p>
 
-                <p>The difference is dramatic. In a library with 1,000 books, linear search might check all 1,000. Binary search never checks more than 10.</p>
+            <p>The difference is dramatic. In a library with 1,000 books, linear search might check all 1,000. Binary search never checks more than 10.</p>
 
-                <h2>The Cost of Speed</h2>
+            <h2>The Cost of Speed</h2>
 
-                <p>But binary search requires preparation, all those books must be sorted first. This illustrates a key principle: structure enables speed. Sometimes the time you invest in organizing pays huge dividends later.</p>
+            <p>But binary search requires preparation—all those books must be sorted first. This illustrates a key principle: structure enables speed. Sometimes the time you invest in organizing pays huge dividends later.</p>
 
-                <p>Algorithmic thinking always considers these tradeoffs. How long does the algorithm take to run? How much memory does it need? There's no "best" algorithm, only algorithms that work better for specific situations.</p>
+            <p>Algorithmic thinking always considers these tradeoffs. How long does the algorithm take to run? How much memory does it need? There's no "best" algorithm—only algorithms that work better for specific situations.</p>
 
-                <p>A binary search on unsorted data is useless. A linear search on a million items is painfully slow. Context determines the right choice.</p>
+            <p>A binary search on unsorted data is useless. A linear search on a million items is painfully slow. Context determines the right choice.</p>
 
-                <h2>Breaking Big Problems Down</h2>
+            <h2>Breaking Big Problems Down</h2>
 
-                <p>Complex problems become manageable when you break them into smaller pieces. Each piece should have a clear input and output. Solve the small pieces, then combine them.</p>
+            <p>Complex problems become manageable when you break them into smaller pieces. Each piece should have a clear input and output. Solve the small pieces, then combine them.</p>
 
-                <p>This decomposition isn't just helpful, it's how programmers tackle anything complicated. Can't solve the whole problem at once? Find the parts you can solve, then figure out how they fit together.</p>
+            <p>This decomposition isn't just helpful—it's how programmers tackle anything complicated. Can't solve the whole problem at once? Find the parts you can solve, then figure out how they fit together.</p>
 
-                <h2>Why This Matters</h2>
+            <h2>Why This Matters</h2>
 
-                <p>Algorithmic thinking teaches you to approach problems systematically. It values precision over cleverness, planning over improvisation. When you think algorithmically, you naturally ask better questions: What exactly am I trying to solve? What information do I have? What would success look like?</p>
+            <p>Algorithmic thinking teaches you to approach problems systematically. It values precision over cleverness, planning over improvisation. When you think algorithmically, you naturally ask better questions: What exactly am I trying to solve? What information do I have? What would success look like?</p>
 
-                <p>You don't need to be a programmer to benefit from this mindset. Algorithmic thinking is just careful, systematic problem solving. And in our increasingly digital world, understanding how computers "think" helps us work with them more effectively.</p>
+            <p>You don't need to be a programmer to benefit from this mindset. Algorithmic thinking is just careful, systematic problem-solving. And in our increasingly digital world, understanding how computers "think" helps us work with them more effectively.</p>
 
-                <p>The next time you face a complex challenge, try thinking like an algorithm: Define your inputs, clarify your desired output, and break the problem into manageable steps. You might be surprised how much clearer the path forward becomes.</p>
-            </article>
+            <p>The next time you face a complex challenge, try thinking like an algorithm: Define your inputs, clarify your desired output, and break the problem into manageable steps. You might be surprised how much clearer the path forward becomes.</p>
         </main>
     </div>
 </body>
