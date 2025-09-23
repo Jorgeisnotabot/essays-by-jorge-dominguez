@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solving the Social Distancing Seating Problem - Technical Essays</title>
+    <meta name="description" content="A step-by-step guide to solving the social distancing seating problem using greedy algorithms, interval merging, and mathematical insights.">
+<!-- SEO Meta Tags -->
+<meta name="keywords" content="algorithms, programming, greedy algorithms, interval scheduling, optimization, data structures, computer science">
+<meta name="author" content="Technical Essays">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solving the Social Distancing Seating Problem">
+<meta property="og:url" content="https://jorgeisnotabot.github.io/essays-by-jorge-dominguez/essays/cafeteria-problem.html">
+<meta property="og:description" content="A step-by-step guide to solving the social distancing seating problem using greedy algorithms, interval merging, and mathematical insights.">
+<meta property="og:site_name" content="Technical Essays">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Technical Essays">
+<meta property="article:published_time" content="2025-06-23T00:00:00Z">
+<meta property="article:section" content="Algorithms">
+<meta property="article:tag" content="algorithms">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="optimization">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Solving the Social Distancing Seating Problem">
+<meta name="twitter:url" content="https://jorgeisnotabot.github.io/essays-by-jorge-dominguez/essays/cafeteria-problem.html">
+<meta name="twitter:description" content="A step-by-step guide to solving the social distancing seating problem using greedy algorithms, interval merging, and mathematical insights.">
+
+<!-- Additional SEO -->
+<meta name="theme-color" content="#d32f2f">
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Solving the Social Distancing Seating Problem",
+    "description": "A step-by-step guide to solving the social distancing seating problem using greedy algorithms, interval merging, and mathematical insights.",
+    "author": {
+        "@type": "Person",
+        "name": "Technical Essays"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Technical Essays"
+    },
+    "datePublished": "2025-06-23T00:00:00Z",
+    "dateModified": "2025-06-23T00:00:00Z",
+    "articleSection": "Algorithms",
+    "keywords": ["algorithms", "programming", "greedy algorithms", "interval scheduling", "optimization"],
+    "wordCount": 2500,
+    "timeRequired": "PT12M",
+    "inLanguage": "en-US",
+    "isAccessibleForFree": true
+}
+</script>
+
+<style>
+    :root {
+        --white: #ffffff;
+        --near-white: #fafafa;
+        --light-gray: #f5f5f5;
+        --medium-gray: #e0e0e0;
+        --text-gray: #333333;
+        --text-light: #666666;
+        --red: #d32f2f;
+        --blue: #1976d2;
+        --yellow: #fbc02d;
+        --green: #27ae60;
+        --purple: #9b59b6;
+        --orange: #ff9f43;
+        --base-unit: 8px;
+        --text-xs: 0.75rem;
+        --text-sm: 0.875rem;
+        --text-base: 1rem;
+        --text-lg: 1.125rem;
+        --text-xl: 1.25rem;
+        --text-2xl: 1.5rem;
+        --text-3xl: 2rem;
+        --text-4xl: 2.5rem;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        color: var(--text-gray);
+        background-color: var(--white);
+        font-size: var(--text-lg);
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: calc(var(--base-unit) * 12) calc(var(--base-unit) * 3);
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: calc(var(--base-unit) * 8);
+        color: var(--red);
+        text-decoration: none;
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+        transition: opacity 0.2s ease;
+    }
+
+    .back-link:hover {
+        opacity: 0.7;
+    }
+
+    .back-link::before {
+        content: "← ";
+        margin-right: calc(var(--base-unit) * 1);
+    }
+
+    .article-header {
+        margin-bottom: calc(var(--base-unit) * 12);
+        padding-bottom: calc(var(--base-unit) * 8);
+        border-bottom: 1px solid var(--medium-gray);
+        position: relative;
+    }
+
+    .article-number {
+        font-size: var(--text-xs);
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        margin-bottom: calc(var(--base-unit) * 3);
+        font-weight: 500;
+    }
+
+    .article-title {
+        font-size: var(--text-4xl);
+        font-weight: 300;
+        line-height: 1.1;
+        margin-bottom: calc(var(--base-unit) * 4);
+        color: var(--text-gray);
+        letter-spacing: -0.02em;
+    }
+
+    .article-meta {
+        font-size: var(--text-xs);
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+    }
+
+    .accent-line {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: calc(var(--base-unit) * 8);
+        height: 1px;
+        background-color: var(--red);
+    }
+
+    .article-content {
+        max-width: 75ch;
+        margin: 0 auto;
+    }
+
+    .article-content p {
+        margin-bottom: calc(var(--base-unit) * 4);
+        line-height: 1.7;
+    }
+
+    .article-content p:first-of-type {
+        font-size: var(--text-xl);
+        line-height: 1.5;
+        margin-bottom: calc(var(--base-unit) * 6);
+        color: var(--text-gray);
+    }
+
+    .article-content h2 {
+        font-size: var(--text-2xl);
+        font-weight: 400;
+        margin: calc(var(--base-unit) * 8) 0 calc(var(--base-unit) * 4) 0;
+        color: var(--text-gray);
+        position: relative;
+    }
+
+    .article-content h2::before {
+        content: '';
+        position: absolute;
+        left: calc(var(--base-unit) * -6);
+        top: 50%;
+        transform: translateY(-50%);
+        width: calc(var(--base-unit) * 3);
+        height: 1px;
+        background-color: var(--blue);
+    }
+
+    .article-content h3 {
+        font-size: var(--text-xl);
+        font-weight: 500;
+        margin: calc(var(--base-unit) * 6) 0 calc(var(--base-unit) * 3) 0;
+        color: var(--text-gray);
+    }
+
+    .article-content em {
+        font-style: italic;
+        color: var(--blue);
+    }
+
+    .article-content strong {
+        font-weight: 600;
+        color: var(--text-gray);
+    }
+
+    .article-content code {
+        font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+        background-color: var(--light-gray);
+        padding: calc(var(--base-unit) * 0.5) calc(var(--base-unit) * 1);
+        border-radius: calc(var(--base-unit) * 0.5);
+        font-size: var(--text-sm);
+        color: var(--red);
+    }
+
+    .article-content pre {
+        background-color: var(--light-gray);
+        padding: calc(var(--base-unit) * 3);
+        border-radius: calc(var(--base-unit) * 1);
+        overflow-x: auto;
+        margin: calc(var(--base-unit) * 4) 0;
+        border-left: calc(var(--base-unit) * 0.5) solid var(--blue);
+    }
+
+    .article-content pre code {
+        background: none;
+        padding: 0;
+        color: var(--text-gray);
+    }
+
+    .visual-demo {
+        margin: calc(var(--base-unit) * 6) 0;
+        padding: calc(var(--base-unit) * 4);
+        border: 2px solid var(--medium-gray);
+        border-radius: calc(var(--base-unit) * 1);
+        background: var(--near-white);
+        position: relative;
+    }
+
+    .visual-demo::before {
+        content: attr(data-title);
+        position: absolute;
+        top: calc(var(--base-unit) * -1.5);
+        left: calc(var(--base-unit) * 2);
+        background: var(--white);
+        padding: 0 calc(var(--base-unit) * 1);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: var(--text-light);
+    }
+
+    .seat-row {
+        display: flex;
+        gap: calc(var(--base-unit) * 0.5);
+        margin-bottom: calc(var(--base-unit) * 1);
+        align-items: center;
+    }
+
+    .seat {
+        width: calc(var(--base-unit) * 4);
+        height: calc(var(--base-unit) * 4);
+        border: 2px solid var(--medium-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--text-xs);
+        font-weight: 600;
+        border-radius: calc(var(--base-unit) * 0.5);
+    }
+
+    .seat.occupied {
+        background: var(--red);
+        border-color: var(--red);
+        color: var(--white);
+    }
+
+    .seat.new {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: var(--white);
+    }
+
+    .seat.blocked {
+        background: #ffe6e6;
+        border-color: #ff6b6b;
+        color: var(--red);
+    }
+
+    .seat.available {
+        background: #d5f4e6;
+        border-color: var(--green);
+        color: var(--green);
+    }
+
+    .seat.buffer {
+        background: #ffe8d4;
+        border-color: var(--orange);
+        color: var(--red);
+    }
+
+    .legend {
+        margin-top: calc(var(--base-unit) * 2);
+        font-size: var(--text-xs);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: calc(var(--base-unit) * 1);
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--base-unit) * 1);
+    }
+
+    .legend-color {
+        width: calc(var(--base-unit) * 2);
+        height: calc(var(--base-unit) * 2);
+        border-radius: calc(var(--base-unit) * 0.25);
+    }
+
+    .app-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: calc(var(--base-unit) * 2);
+        margin: calc(var(--base-unit) * 6) 0;
+    }
+
+    .app-card {
+        border: 2px solid var(--medium-gray);
+        border-radius: calc(var(--base-unit) * 1);
+        padding: calc(var(--base-unit) * 3);
+        background: var(--near-white);
+    }
+
+    .app-card h4 {
+        font-size: var(--text-lg);
+        font-weight: 600;
+        margin-bottom: calc(var(--base-unit) * 2);
+        color: var(--text-gray);
+    }
+
+    .app-card .problem {
+        margin-bottom: calc(var(--base-unit) * 1);
+    }
+
+    .app-card .constraint {
+        margin-bottom: calc(var(--base-unit) * 1);
+    }
+
+    .app-card .goal {
+        margin-bottom: 0;
+    }
+
+    .complexity-box {
+        background: var(--light-gray);
+        border-left: calc(var(--base-unit) * 0.5) solid var(--green);
+        padding: calc(var(--base-unit) * 3);
+        margin: calc(var(--base-unit) * 4) 0;
+        border-radius: calc(var(--base-unit) * 0.5);
+    }
+
+    .complexity-box h4 {
+        font-size: var(--text-lg);
+        font-weight: 600;
+        margin-bottom: calc(var(--base-unit) * 2);
+        color: var(--text-gray);
+    }
+
+    .complexity-box ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .complexity-box li {
+        margin-bottom: calc(var(--base-unit) * 1);
+        position: relative;
+        padding-left: calc(var(--base-unit) * 3);
+    }
+
+    .complexity-box li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--green);
+        font-weight: bold;
+    }
+
+    .color-accent {
+        position: fixed;
+        top: calc(var(--base-unit) * 8);
+        right: calc(var(--base-unit) * 3);
+        width: calc(var(--base-unit) * 6);
+        height: calc(var(--base-unit) * 6);
+        background-color: var(--yellow);
+        z-index: -1;
+    }
+
+    .color-accent::after {
+        content: '';
+        position: absolute;
+        bottom: calc(var(--base-unit) * -3);
+        left: calc(var(--base-unit) * -3);
+        width: calc(var(--base-unit) * 3);
+        height: calc(var(--base-unit) * 3);
+        background-color: var(--blue);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: calc(var(--base-unit) * 8) calc(var(--base-unit) * 2);
+        }
+        
+        body {
+            font-size: var(--text-base);
+        }
+        
+        .article-title {
+            font-size: var(--text-3xl);
+        }
+        
+        .article-content p:first-of-type {
+            font-size: var(--text-lg);
+        }
+        
+        .article-content h2 {
+            font-size: var(--text-xl);
+        }
+        
+        .seat {
+            width: calc(var(--base-unit) * 3);
+            height: calc(var(--base-unit) * 3);
+        }
+        
+        .color-accent {
+            width: calc(var(--base-unit) * 4);
+            height: calc(var(--base-unit) * 4);
+            top: calc(var(--base-unit) * 4);
+            right: calc(var(--base-unit) * 2);
+        }
+        
+        .color-accent::after {
+            width: calc(var(--base-unit) * 2);
+            height: calc(var(--base-unit) * 2);
+            bottom: calc(var(--base-unit) * -2);
+            left: calc(var(--base-unit) * -2);
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="color-accent"></div>
+<div class="container">
+    <a href="#" class="back-link">Back to Essays</a>
+    
+    <header class="article-header">
+        <div class="article-number">03</div>
+        <h1 class="article-title">Solving the Social Distancing Seating Problem</h1>
+        <div class="article-meta">June 2025 • 12 min read</div>
+        <div class="accent-line"></div>
+    </header>
+
+    <main class="article-content">
+        <p>Have you ever wondered how to optimally seat people in a cafeteria while maintaining social distancing? Today, we'll explore a fascinating algorithmic problem that combines greedy algorithms, interval merging, and mathematical insights to find the maximum number of additional diners we can seat.</p>
+
+        <h2>The Problem</h2>
+
+        <p>Imagine a cafeteria with <strong>N</strong> seats arranged in a single row, numbered 1 to N. Social distancing guidelines require that every diner must have <strong>K</strong> empty seats on both their left and right sides. We're given <strong>M</strong> existing diners already seated, and we need to determine the maximum number of additional diners we can seat without violating the guidelines.</p>
+
+        <h3>Example</h3>
+        <p>Let's consider:</p>
+        <ul style="list-style-type: none; padding-left: 0; margin: calc(var(--base-unit) * 2) 0;">
+            <li><strong>N = 10</strong> (10 total seats)</li>
+            <li><strong>K = 1</strong> (1 empty seat required on each side)</li>
+            <li><strong>M = 2</strong> (2 existing diners)</li>
+            <li><strong>S = [2, 6]</strong> (diners at positions 2 and 6)</li>
+        </ul>
+
+        <div class="visual-demo" data-title="Example Visualization">
+            <div style="font-weight: bold; margin-bottom: calc(var(--base-unit) * 2); font-size: var(--text-sm);">Initial State:</div>
+            <div class="seat-row">
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">1</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">2</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">3</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">4</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">5</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">6</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">7</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">8</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">9</div>
+                <div style="width: 30px; text-align: center; font-weight: bold; font-size: var(--text-xs);">10</div>
+            </div>
+            <div class="seat-row">
+                <div class="seat"></div>
+                <div class="seat occupied">👤</div>
+                <div class="seat"></div>
+                <div class="seat"></div>
+                <div class="seat"></div>
+                <div class="seat occupied">👤</div>
+                <div class="seat"></div>
+                <div class="seat"></div>
+                <div class="seat"></div>
+                <div class="seat"></div>
+            </div>
+            
+            <div style="font-weight: bold; margin: calc(var(--base-unit) * 3) 0 calc(var(--base-unit) * 2) 0; font-size: var(--text-sm);">Blocked Regions (K=1 means 1 seat buffer on each side):</div>
+            <div class="seat-row">
+                <div class="seat blocked">✗</div>
+                <div class="seat occupied">👤</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat available">✓</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat occupied">👤</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat available">✓</div>
+                <div class="seat available">✓</div>
+                <div class="seat available">✓</div>
+            </div>
+
+            <div style="font-weight: bold; margin: calc(var(--base-unit) * 3) 0 calc(var(--base-unit) * 2) 0; font-size: var(--text-sm);">Optimal Solution:</div>
+            <div class="seat-row">
+                <div class="seat blocked">✗</div>
+                <div class="seat occupied">👤</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat new">👤</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat occupied">👤</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat new">👤</div>
+                <div class="seat blocked">✗</div>
+                <div class="seat new">👤</div>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--red);"></div>
+                    <span>Existing diners</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: var(--blue);"></div>
+                    <span>New diners</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffe6e6;"></div>
+                    <span>Blocked seats</span>
+                </div>
+            </div>
+        </div>
+
+        <p><strong>Answer: 3</strong> additional diners can be seated at positions 4, 8, and 10.</p>
+
+        <h2>Understanding the Core Insight</h2>
+
+        <p>The key insight is that each diner at position <code>p</code> effectively "blocks" positions <code>[p-K, p+K]</code>. No other diner can sit in this range because:</p>
+        <ul style="margin: calc(var(--base-unit) * 2) 0; padding-left: calc(var(--base-unit) * 4);">
+            <li>Positions <code>[p-K, p-1]</code> are too close to the left</li>
+            <li>Position <code>p</code> is occupied</li>
+            <li>Positions <code>[p+1, p+K]</code> are too close to the right</li>
+        </ul>
+
+        <div class="visual-demo" data-title="Blocking Mechanism (K=2 example)">
+            <div style="margin-bottom: calc(var(--base-unit) * 2); font-size: var(--text-sm);">Diner at position 5 with K=2:</div>
+            <div class="seat-row">
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">1</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">2</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">3</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">4</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">5</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">6</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">7</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">8</div>
+                <div style="width: 25px; text-align: center; font-weight: bold; font-size: 10px;">9</div>
+            </div>
+            <div class="seat-row">
+                <div style="width: 25px; height: 25px; border: 1px solid var(--medium-gray); background: var(--near-white);"></div>
+                <div style="width: 25px; height: 25px; border: 2px solid #ff6b6b; background: #ffe6e6; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--red);">K-2</div>
+                <div style="width: 25px; height: 25px; border: 2px solid #ff6b6b; background: #ffe6e6; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--red);">K-1</div>
+                <div style="width: 25px; height: 25px; border: 2px solid var(--red); background: var(--red); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 12px;">👤</div>
+                <div style="width: 25px; height: 25px; border: 2px solid #ff6b6b; background: #ffe6e6; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--red);">K+1</div>
+                <div style="width: 25px; height: 25px; border: 2px solid #ff6b6b; background: #ffe6e6; display: flex; align-items: center; justify-content: center; font-size: 8px; color: var(--red);">K+2</div>
+                <div style="width: 25px; height: 25px; border: 1px solid var(--medium-gray); background: var(--near-white);"></div>
+                <div style="width: 25px; height: 25px; border: 1px solid var(--medium-gray); background: var(--near-white);"></div>
+                <div style="width: 25px; height: 25px; border: 1px solid var(--medium-gray); background: var(--near-white);"></div>
+            </div>
+            <div style="font-size: 11px; margin-top: calc(var(--base-unit) * 2);">
+                <div>🔴 Blocked interval: [3, 7] = [5-2, 5+2]</div>
+                <div>✅ Minimum distance to next diner: K+1 = 3 positions</div>
+            </div>
+        </div>
+
+        <p>This transforms our problem into finding available <em>gaps</em> between blocked regions and determining how many diners we can optimally place in each gap.</p>
+
+        <h2>The Algorithm: Step by Step</h2>
+
+        <h3>Step 1: Create Blocked Intervals</h3>
+
+        <p>For each existing diner at position <code>seat</code>, create a blocked interval:</p>
+
+        <pre><code>const start = Math.max(1, seat - K);
+const end = Math.min(N, seat + K);
+blocked.push([start, end]);</code></pre>
+        <p><strong>Example</strong>: With K=1 and diners at [2, 6]:</p>
+        <ul style="margin: calc(var(--base-unit) * 2) 0; padding-left: calc(var(--base-unit) * 4);">
+            <li>Diner at 2 blocks [1, 3]</li>
+            <li>Diner at 6 blocks [5, 7]</li>
+        </ul>
+
+        <h3>Step 2: Merge Overlapping Intervals</h3>
+
+        <p>Sometimes blocked intervals overlap or are adjacent. We need to merge them to get a clear picture of unavailable regions:</p>
+
+        <pre><code>blocked.sort((a, b) => a[0] - b[0]);
+const merged = [];
+for (const [start, end] of blocked) {
+if (merged.length === 0 || merged[merged.length - 1][1] < start - 1) {
+merged.push([start, end]);
+} else {
+merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], end);
+}
+}</code></pre>
+        <div class="visual-demo" data-title="Merging Example (K=1, diners at [3, 4, 7])">
+            <div style="margin-bottom: calc(var(--base-unit) * 2); font-size: var(--text-sm);"><strong>Before merging:</strong></div>
+            <div style="margin-bottom: calc(var(--base-unit) * 1); font-size: var(--text-sm);">Diner at 3 blocks: [2, 4]</div>
+            <div style="margin-bottom: calc(var(--base-unit) * 1); font-size: var(--text-sm);">Diner at 4 blocks: [3, 5]</div>
+            <div style="margin-bottom: calc(var(--base-unit) * 2); font-size: var(--text-sm);">Diner at 7 blocks: [6, 8]</div>
+            
+            <div class="seat-row">
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">1</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">2</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">3</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">4</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">5</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">6</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">7</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">8</div>
+                <div style="width: 20px; text-align: center; font-weight: bold; font-size: 10px;">9</div>
+            </div>
+            <div class="seat-row">
+                <div style="width: 20px; height: 20px; border: 1px solid var(--green); background: #d5f4e6;"></div>
+                <div style="width: 20px; height: 20px; border: 1px solid var(--red); background: #ffebee;"></div>
+                <div style="width: 20px; height: 20px; border: 2px solid var(--red); background: var(--red); color: white; display: flex; align-items: center; justify-content: center; font-size: 8px;">👤</div>
+                <div style="width: 20px; height: 20px; border: 2px solid var(--red); background: var(--red); color: white; display: flex; align-items: center; justify-content: center; font-size: 8px;">👤</div>
+                <div style="width: 20px; height: 20px; border: 1px solid var(--red); background: #ffebee;"></div>
+                <div style="width: 20px; height: 20px; border: 1px solid var(--red); background: #ffebee;"></div>
+                <div style="width: 20px; height: 20px; border: 2px solid var(--red); background: var(--red); color: white; display: flex; align-items: center; justify-content: center; font-size: 8px;">👤</div>
+                <div style="width: 20px; height: 20px; border: 1px solid var(--red); background: #ffebee;"></div>
+                <div style="width: 20px; height: 20px; border: 1px solid var(--green); background: #d5f4e6;"></div>
+            </div>
+            
+            <div style="margin: calc(var(--base-unit) * 3) 0 calc(var(--base-unit) * 1) 0; font-size: var(--text-sm);"><strong>After merging:</strong></div>
+            <div style="margin-bottom: calc(var(--base-unit) * 1); font-size: var(--text-sm);">Merged blocked region: [2, 5] ∪ [6, 8]</div>
+            <div style="font-size: 11px; color: var(--text-light);">
+                [2,4] and [3,5] overlap → merge to [2,5]<br/>
+                [6,8] stands alone (gap of 1 between 5 and 6)
+            </div>
+        </div>
+
+        <p><strong>Why merge?</strong> If we have diners close together, their blocked regions might overlap. For efficiency and correctness, we treat overlapping blocked regions as a single large blocked region.</p>
+
+        <h3>Step 3: Find and Process Gaps</h3>
+
+        <p>Now we identify the gaps between blocked regions and calculate how many diners we can place in each gap:</p>
+
+        <pre><code>let result = 0;
+let prevEnd = 0;
+for (const [start, end] of merged) {
+const gapStart = prevEnd + 1;
+const gapEnd = start - 1;
+if (gapStart <= gapEnd) {
+    // The magic formula!
+    result += Math.floor((gapEnd - gapStart) / (K + 1)) + 1;
+}
+
+prevEnd = end;
+}</code></pre>
+        <h3>Step 4: Handle the Final Gap</h3>
+
+        <p>Don't forget the gap after the last blocked region:</p>
+
+        <pre><code>if (prevEnd < N) {
+const gapStart = prevEnd + 1;
+const gapEnd = N;
+result += Math.floor((gapEnd - gapStart) / (K + 1)) + 1;
+}</code></pre>
+        <h2>The Critical Formula Explained</h2>
+
+        <p>The heart of our solution is this formula:</p>
+        <pre><code>Math.floor((gapEnd - gapStart) / (K + 1)) + 1</code></pre>
+
+        <p><strong>Why does this work?</strong></p>
+
+        <p>In a gap from position <code>gapStart</code> to <code>gapEnd</code>, we can place diners at:</p>
+        <ul style="margin: calc(var(--base-unit) * 2) 0; padding-left: calc(var(--base-unit) * 4);">
+            <li>Position <code>gapStart</code></li>
+            <li>Position <code>gapStart + (K+1)</code></li>
+            <li>Position <code>gapStart + 2×(K+1)</code></li>
+            <li>And so on...</li>
+        </ul>
+
+        <p>The spacing of <code>K+1</code> ensures that each diner has exactly <code>K</code> empty seats between them and the next diner.</p>
+
+        <div class="visual-demo" data-title="Gap Formula Breakdown [8, 10] with K=1">
+            <div style="margin-bottom: calc(var(--base-unit) * 2); font-size: var(--text-sm);">Gap [8, 10] with K=1:</div>
+            <div class="seat-row">
+                <div style="width: 40px; text-align: center; font-weight: bold; font-size: var(--text-sm);">8</div>
+                <div style="width: 40px; text-align: center; font-weight: bold; font-size: var(--text-sm);">9</div>
+                <div style="width: 40px; text-align: center; font-weight: bold; font-size: var(--text-sm);">10</div>
+            </div>
+            <div class="seat-row">
+                <div style="width: 40px; height: 40px; border: 2px solid var(--blue); background: var(--blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">👤</div>
+                <div style="width: 40px; height: 40px; border: 2px solid var(--orange); background: #ffe8d4; display: flex; align-items: center; justify-content: center; color: var(--red);">K=1</div>
+                <div style="width: 40px; height: 40px; border: 2px solid var(--blue); background: var(--blue); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">👤</div>
+            </div>
+            <div style="font-size: 11px; margin-top: calc(var(--base-unit) * 2);">
+                <div>✅ Position 8: New diner</div>
+                <div>🚫 Position 9: Required empty space (K=1)</div>
+                <div>✅ Position 10: New diner (distance 2 ≥ K+1)</div>
+                <div style="margin-top: calc(var(--base-unit) * 1); font-weight: 600;">Formula: floor((10-8)/(1+1)) + 1 = floor(2/2) + 1 = 1 + 1 = 2 ✓</div>
+            </div>
+        </div>
+
+        <h2>Complete Solution</h2>
+
+        <pre><code>function getMaxAdditionalDinersCount(N, K, M, S) {
+if (M === 0) {
+    return Math.floor((N - K) / (K + 1));
+}
+
+S.sort((a, b) => a - b);
+
+// Step 1: Create blocked ranges
+const blocked = [];
+for (let i = 0; i < M; i++) {
+    const seat = S[i];
+    const start = Math.max(1, seat - K);
+    const end = Math.min(N, seat + K);
+    blocked.push([start, end]);
+}
+
+// Step 2: Merge overlapping ranges
+blocked.sort((a, b) => a[0] - b[0]);
+const merged = [];
+for (const [start, end] of blocked) {
+    if (merged.length === 0 || merged[merged.length - 1][1] < start - 1) {
+        merged.push([start, end]);
+    } else {
+        merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], end);
+    }
+}
+
+// Step 3 & 4: Process gaps
+let result = 0;
+let prevEnd = 0;
+
+for (const [start, end] of merged) {
+    const gapStart = prevEnd + 1;
+    const gapEnd = start - 1;
+    
+    if (gapStart <= gapEnd) {
+        result += Math.floor((gapEnd - gapStart) / (K + 1)) + 1;
+    }
+    
+    prevEnd = end;
+}
+
+// Handle final gap
+if (prevEnd < N) {
+    const gapStart = prevEnd + 1;
+    const gapEnd = N;
+    result += Math.floor((gapEnd - gapStart) / (K + 1)) + 1;
+}
+
+return result;
+}</code></pre>
+        <h2>Complexity Analysis</h2>
+
+        <div class="complexity-box">
+            <h4>Performance Metrics</h4>
+            <ul>
+                <li><strong>Time Complexity</strong>: O(M log M)</li>
+                <li><strong>Space Complexity</strong>: O(M)</li>
+                <li><strong>Scalability</strong>: Handles N ≤ 10¹⁵, M ≤ 500,000</li>
+            </ul>
+        </div>
+
+        <p>This is highly efficient even for large inputs because our algorithm's complexity depends only on the number of existing diners (M), not the total number of seats (N). The bottleneck is sorting the existing diner positions, not processing the seat range.</p>
+
+        <h2>Common Pitfalls and How to Avoid Them</h2>
+
+        <h3>Pitfall 1: Incorrect Gap Formula</h3>
+        <p>❌ <strong>Wrong</strong>: <code>Math.floor(gapLength / (K + 1))</code><br/>
+        ✅ <strong>Correct</strong>: <code>Math.floor((gapEnd - gapStart) / (K + 1)) + 1</code></p>
+        <p>The <code>+1</code> accounts for the first diner we can place at the start of the gap.</p>
+
+        <h3>Pitfall 2: Forgetting Edge Cases</h3>
+        <ul style="margin: calc(var(--base-unit) * 2) 0; padding-left: calc(var(--base-unit) * 4);">
+            <li>Empty input (M = 0)</li>
+            <li>Single diner</li>
+            <li>All seats blocked</li>
+            <li>Gaps of size 1</li>
+        </ul>
+
+        <h3>Pitfall 3: Off-by-One Errors</h3>
+        <p>Always double-check your interval boundaries and ensure you're using inclusive ranges correctly.</p>
+
+        <h2>Real-World Applications</h2>
+
+        <p>This algorithm pattern appears in many real-world scenarios. The core pattern remains the same: <em>blocked intervals + gap optimization + greedy placement</em>.</p>
+
+        <div class="app-grid">
+            <div class="app-card">
+                <h4>🖥️ Data Centers</h4>
+                <div class="problem"><strong>Problem:</strong> Place servers with cooling requirements</div>
+                <div class="constraint"><strong>Constraint:</strong> Each server needs buffer space for heat dissipation</div>
+                <div class="goal"><strong>Goal:</strong> Maximize server density</div>
+            </div>
+
+            <div class="app-card">
+                <h4>🏙️ Urban Planning</h4>
+                <div class="problem"><strong>Problem:</strong> Position facilities (hospitals, schools)</div>
+                <div class="constraint"><strong>Constraint:</strong> Minimum distance requirements</div>
+                <div class="goal"><strong>Goal:</strong> Optimal coverage and accessibility</div>
+            </div>
+
+            <div class="app-card">
+                <h4>🏭 Manufacturing</h4>
+                <div class="problem"><strong>Problem:</strong> Schedule processes with buffer times</div>
+                <div class="constraint"><strong>Constraint:</strong> Cooldown/setup time between operations</div>
+                <div class="goal"><strong>Goal:</strong> Maximize throughput</div>
+            </div>
+
+            <div class="app-card">
+                <h4>📡 Network Design</h4>
+                <div class="problem"><strong>Problem:</strong> Place routers/cell towers</div>
+                <div class="constraint"><strong>Constraint:</strong> Interference prevention zones</div>
+                <div class="goal"><strong>Goal:</strong> Optimal coverage with minimal interference</div>
+            </div>
+        </div>
+
+        <h2>Conclusion</h2>
+
+        <p>The social distancing seating problem beautifully demonstrates how complex real-world constraints can be solved using fundamental algorithmic techniques. By recognizing the problem as an interval scheduling challenge and applying greedy principles, we arrived at an elegant and efficient solution.</p>
+
+        <p>The key takeaways:</p>
+        <ul style="margin: calc(var(--base-unit) * 2) 0; padding-left: calc(var(--base-unit) * 4);">
+            <li><strong>Transform the problem</strong>: Convert seating constraints into blocked intervals</li>
+            <li><strong>Simplify with merging</strong>: Combine overlapping constraints</li>
+            <li><strong>Apply greedy strategy</strong>: Fill gaps optimally from left to right</li>
+            <li><strong>Use the right formula</strong>: Account for all positions in each gap</li>
+        </ul>
+
+        <p>Next time you're in a cafeteria, you'll know exactly how to maximize seating while keeping everyone safe! 🍽️</p>
+
+        <hr style="border: none; border-top: 1px solid var(--medium-gray); margin: calc(var(--base-unit) * 8) 0;">
+        
+        <p style="font-style: italic; color: var(--text-light); text-align: center;">Have questions about this solution or want to explore similar problems? The beauty of algorithms lies in their universality—once you understand the pattern, you see it everywhere.</p>
+
+    </main>
+</div>
+</body>
+</html>
