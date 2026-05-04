@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesa Teleprompter</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Controls UI */
+        #controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(30, 30, 30, 0.9);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            z-index: 100;
+            border-top: 1px solid #444;
+        }
+
+        button {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover { background: #666; }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        /* Teleprompter Text Area */
+        #prompter-container {
+            width: 80%;
+            max-width: 900px;
+            margin-top: 50vh; /* Starts the text in the middle of the screen */
+            padding-bottom: 50vh;
+            font-size: 4.5vw;
+            line-height: 1.5;
+            transition: transform 0.3s;
+        }
+
+        .mirrored {
+            transform: scaleX(-1);
+        }
+
+        /* Speaker Styles */
+        .line {
+            margin-bottom: 40px;
+        }
+
+        .juan { color: #4facf7; font-weight: bold; } /* Blue for Juan */
+        .jorge { color: #64e064; font-weight: bold; } /* Green for Jorge */
+        .text { color: #ffffff; }
+
+        /* Reading Guide Line */
+        #guide {
+            position: fixed;
+            top: 40%;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background-color: rgba(255, 0, 0, 0.5);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        @media (min-width: 1200px) {
+            #prompter-container { font-size: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="guide"></div>
+
+    <div id="prompter-container">
+        <div class="line"><span class="juan">[Juan]</span> <span class="text">So Jorge, every startup right now is building AI agents. Tools talking to tools. Why are we doing the exact opposite with Mesa?</span></div>
+        
+        <div class="line"><span class="jorge">[Jorge]</span> <span class="text">Because we looked around us. A whole generation stopped chasing corporate careers to open neighborhood cafes and restaurants. They want to make something real and serve real people. Not to scale. Not to exit.</span></div>
+        
+        <div class="line"><span class="juan">[Juan]</span> <span class="text">And they don't want technology in that picture?</span></div>
+        
+        <div class="line"><span class="jorge">[Jorge]</span> <span class="text">They want it invisible. They are done being the product of tech. No robots, no AI chatbots. They only care about one thing: did the order reach the kitchen?</span></div>
+        
+        <div class="line"><span class="juan">[Juan]</span> <span class="text">So how does Mesa solve that?</span></div>
+        
+        <div class="line"><span class="jorge">[Jorge]</span> <span class="text">Customers order directly from their phone at the table. The kitchen receives every order instantly with the customer's name. No hardware. No contracts. No confusing orders. No awkward moments.</span></div>
+        
+        <div class="line"><span class="juan">[Juan]</span> <span class="text">Is anyone using it?</span></div>
+        
+        <div class="line"><span class="jorge">[Jorge]</span> <span class="text">Beanfra, a vegan spot in Baja California, is already running on Mesa. They don't think about technology anymore. They think about their food.</span></div>
+        
+        <div class="line"><span class="juan">[Juan]</span> <span class="text">I'm Juan.</span></div>
+        
+        <div class="line"><span class="jorge">[Jorge]</span> <span class="text">I'm Jorge. We are brothers from Mexico, and this is Mesa by FeelBack AI</span></div>
+    </div>
+
+    <div id="controls">
+        <button id="playBtn">Play / Pause (Space)</button>
+        <button id="mirrorBtn">Mirror Text</button>
+        <button id="resetBtn">Reset</button>
+        <div class="slider-container">
+            <label for="speedSlider">Speed:</label>
+            <input type="range" id="speedSlider" min="0.5" max="5" step="0.1" value="1.5">
+        </div>
+    </div>
+
+    <script>
+        let isPlaying = false;
+        let scrollSpeed = 1.5;
+        let animationId;
+
+        const playBtn = document.getElementById('playBtn');
+        const mirrorBtn = document.getElementById('mirrorBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const speedSlider = document.getElementById('speedSlider');
+        const prompterContainer = document.getElementById('prompter-container');
+
+        function scrollPage() {
+            if (isPlaying) {
+                window.scrollBy(0, scrollSpeed);
+            }
+            animationId = requestAnimationFrame(scrollPage);
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            playBtn.innerText = isPlaying ? "Pause (Space)" : "Play (Space)";
+            if (isPlaying) {
+                playBtn.style.background = "#c9302c"; 
+            } else {
+                playBtn.style.background = "#444";
+            }
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+
+        mirrorBtn.addEventListener('click', () => {
+            prompterContainer.classList.toggle('mirrored');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            window.scrollTo(0, 0);
+            if (isPlaying) togglePlay();
+        });
+
+        speedSlider.addEventListener('input', (e) => {
+            scrollSpeed = parseFloat(e.target.value);
+        });
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault(); // Prevent default page down scroll
+                togglePlay();
+            } else if (e.code === 'ArrowUp') {
+                e.preventDefault();
+                speedSlider.value = Math.min(parseFloat(speedSlider.value) + 0.1, 5).toFixed(1);
+                scrollSpeed = parseFloat(speedSlider.value);
+            } else if (e.code === 'ArrowDown') {
+                e.preventDefault();
+                speedSlider.value = Math.max(parseFloat(speedSlider.value) - 0.1, 0.5).toFixed(1);
+                scrollSpeed = parseFloat(speedSlider.value);
+            }
+        });
+
+        // Start animation loop
+        requestAnimationFrame(scrollPage);
+    </script>
+</body>
+</html>
