@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Teleprompter</title>
+    <style>
+        :root {
+            --bg-color: #000;
+            --text-color: #fff;
+            --juan-color: #4facf7;
+            --jorge-color: #64e064;
+            --other-color: #ffb86c;
+            --ui-bg: rgba(30, 30, 30, 0.95);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Setup Screen Styles --- */
+        #setup-screen {
+            width: 90%;
+            max-width: 800px;
+            margin-top: 10vh;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: #111;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        #setup-screen h1 {
+            margin: 0;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        #setup-screen p {
+            text-align: center;
+            color: #aaa;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 400px;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--juan-color);
+        }
+
+        .btn-large {
+            background: var(--juan-color);
+            color: #000;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-large:hover {
+            background: #3a8ac7;
+        }
+
+        /* --- Teleprompter Screen Styles --- */
+        #teleprompter-screen {
+            display: none; /* Hidden initially */
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Controls UI */
+        #controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--ui-bg);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            z-index: 100;
+            border-top: 1px solid #444;
+            box-sizing: border-box;
+            flex-wrap: wrap;
+        }
+
+        button.ctrl-btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button.ctrl-btn:hover { background: #666; }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            background: #222;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        /* Teleprompter Text Area */
+        #prompter-container {
+            width: 80%;
+            max-width: 1000px;
+            margin-top: 50vh;
+            padding-bottom: 50vh;
+            font-size: 4.5vw;
+            line-height: 1.5;
+            transition: transform 0.3s;
+        }
+
+        .mirrored {
+            transform: scaleX(-1);
+        }
+
+        .line {
+            margin-bottom: 40px;
+        }
+
+        /* Reading Guide Line */
+        #guide {
+            position: fixed;
+            top: 40%;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background-color: rgba(255, 0, 0, 0.5);
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        @media (min-width: 1200px) {
+            #prompter-container { font-size: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="setup-screen">
+        <h1>Mesa Teleprompter Setup</h1>
+        <p>Paste your script below. Format names in brackets like [Juan] or [Jorge] for automatic color-coding.</p>
+        <textarea id="script-input" placeholder="[Juan] So Jorge, every startup right now is building AI agents..."></textarea>
+        <button id="startBtn" class="btn-large">Start Teleprompter</button>
+    </div>
+
+    <div id="teleprompter-screen" style="display: none;">
+        <div id="guide"></div>
+        <div id="prompter-container"></div>
+
+        <div id="controls">
+            <button id="editBtn" class="ctrl-btn">← Back to Edit</button>
+            <button id="playBtn" class="ctrl-btn">Play / Pause (Space)</button>
+            <button id="mirrorBtn" class="ctrl-btn">Mirror Text</button>
+            <button id="resetBtn" class="ctrl-btn">Restart</button>
+            <div class="slider-container">
+                <label for="speedSlider">Speed:</label>
+                <input type="range" id="speedSlider" min="0.5" max="5" step="0.1" value="1.5">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const setupScreen = document.getElementById('setup-screen');
+        const prompterScreen = document.getElementById('teleprompter-screen');
+        const scriptInput = document.getElementById('script-input');
+        const prompterContainer = document.getElementById('prompter-container');
+        
+        // Control Buttons
+        const startBtn = document.getElementById('startBtn');
+        const editBtn = document.getElementById('editBtn');
+        const playBtn = document.getElementById('playBtn');
+        const mirrorBtn = document.getElementById('mirrorBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const speedSlider = document.getElementById('speedSlider');
+
+        // State variables
+        let isPlaying = false;
+        let scrollSpeed = 1.5;
+        let isPrompterMode = false;
+
+        // Auto-scroll loop
+        function scrollPage() {
+            if (isPlaying && isPrompterMode) {
+                window.scrollBy(0, scrollSpeed);
+            }
+            requestAnimationFrame(scrollPage);
+        }
+        requestAnimationFrame(scrollPage);
+
+        // Parse Script and Build Teleprompter
+        function buildPrompter() {
+            const rawText = scriptInput.value;
+            if (!rawText.trim()) {
+                alert("Please paste a script first!");
+                return;
+            }
+
+            prompterContainer.innerHTML = ''; // Clear old content
+            const lines = rawText.split('\n');
+
+            lines.forEach(line => {
+                if (line.trim() === '') return;
+
+                const div = document.createElement('div');
+                div.className = 'line';
+
+                // Regex to find [Speaker Name] at the start of a line
+                const match = line.match(/^\[(.*?)\](.*)/);
+
+                if (match) {
+                    const speakerName = match[1].trim();
+                    const spokenText = match[2];
+                    
+                    const speakerSpan = document.createElement('span');
+                    speakerSpan.style.fontWeight = 'bold';
+                    speakerSpan.innerText = `[${speakerName}] `;
+
+                    // Dynamic colors based on speaker name
+                    const nameLower = speakerName.toLowerCase();
+                    if (nameLower.includes('juan')) {
+                        speakerSpan.style.color = 'var(--juan-color)';
+                    } else if (nameLower.includes('jorge')) {
+                        speakerSpan.style.color = 'var(--jorge-color)';
+                    } else {
+                        speakerSpan.style.color = 'var(--other-color)';
+                    }
+
+                    const textSpan = document.createElement('span');
+                    textSpan.style.color = 'var(--text-color)';
+                    textSpan.innerText = spokenText;
+
+                    div.appendChild(speakerSpan);
+                    div.appendChild(textSpan);
+                } else {
+                    // No bracketed name found, just normal text
+                    const textSpan = document.createElement('span');
+                    textSpan.style.color = 'var(--text-color)';
+                    textSpan.innerText = line;
+                    div.appendChild(textSpan);
+                }
+
+                prompterContainer.appendChild(div);
+            });
+
+            // Switch views
+            setupScreen.style.display = 'none';
+            prompterScreen.style.display = 'flex';
+            isPrompterMode = true;
+            window.scrollTo(0, 0);
+        }
+
+        // Toggle Play/Pause
+        function togglePlay() {
+            if (!isPrompterMode) return;
+            isPlaying = !isPlaying;
+            playBtn.innerText = isPlaying ? "Pause (Space)" : "Play (Space)";
+            playBtn.style.background = isPlaying ? "#c9302c" : "#444";
+        }
+
+        // Event Listeners
+        startBtn.addEventListener('click', buildPrompter);
+
+        editBtn.addEventListener('click', () => {
+            if (isPlaying) togglePlay(); // Pause if it was playing
+            prompterScreen.style.display = 'none';
+            setupScreen.style.display = 'flex';
+            isPrompterMode = false;
+        });
+
+        playBtn.addEventListener('click', togglePlay);
+
+        mirrorBtn.addEventListener('click', () => {
+            prompterContainer.classList.toggle('mirrored');
+        });
+
+        resetBtn.addEventListener('click', () => {
+            window.scrollTo(0, 0);
+            if (isPlaying) togglePlay();
+        });
+
+        speedSlider.addEventListener('input', (e) => {
+            scrollSpeed = parseFloat(e.target.value);
+        });
+
+        // Keyboard Controls
+        document.addEventListener('keydown', (e) => {
+            if (!isPrompterMode) return; // Only work when teleprompter is active
+
+            if (e.code === 'Space') {
+                e.preventDefault(); // Stop page jumping
+                togglePlay();
+            } else if (e.code === 'ArrowUp') {
+                e.preventDefault();
+                speedSlider.value = Math.min(parseFloat(speedSlider.value) + 0.1, 5).toFixed(1);
+                scrollSpeed = parseFloat(speedSlider.value);
+            } else if (e.code === 'ArrowDown') {
+                e.preventDefault();
+                speedSlider.value = Math.max(parseFloat(speedSlider.value) - 0.1, 0.5).toFixed(1);
+                scrollSpeed = parseFloat(speedSlider.value);
+            }
+        });
+    </script>
+</body>
+</html>
